@@ -21,7 +21,7 @@ namespace Codemunkie.DevTools
             }
             else
             {
-                return CreateSingleColumnDataTable(lines);
+                return CreateSingleColumnDataTable(lines, hasHeaders);
             }
         }
 
@@ -61,16 +61,18 @@ namespace Codemunkie.DevTools
             return dataTable;
         }
 
-        private static DataTable CreateSingleColumnDataTable(string[] lines)
+        private static DataTable CreateSingleColumnDataTable(string[] lines, bool hasHeaders)
         {
             var dataTable = new DataTable();
 
-            dataTable.Columns.Add("Column1");
+            var columnName = hasHeaders ? lines[0].Trim() : "Column1";
+            dataTable.Columns.Add(columnName);
 
-            foreach (var line in lines)
+            var contentStartIndex = hasHeaders ? 1 : 0;
+            for (int i = contentStartIndex; i < lines.Length; i++)
             {
                 var row = dataTable.NewRow();
-                row[0] = line.Trim();
+                row[0] = lines[i].Trim();
                 dataTable.Rows.Add(row);
             }
 

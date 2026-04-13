@@ -33,13 +33,7 @@ jobs:
     - name: Publish solution
       run: dotnet publish -o "${{env.PUBLISH_DIR}}" --configuration Release --runtime ${{matrix.target}} -p:PublishSingleFile=true --no-self-contained
     
-    - name: Zip assets
-      shell: bash
-      run: 7z a -tzip "${{env.PUBLISH_DIR}}.zip" "${{env.PUBLISH_DIR}}/*.exe"
-    
     - name: Upload assets to release
       uses: softprops/action-gh-release@v1
       with:
-        files: "${{env.PUBLISH_DIR}}.zip"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        files: "${{env.PUBLISH_DIR}}/*.exe"

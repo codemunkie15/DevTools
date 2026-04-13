@@ -10,6 +10,7 @@ jobs:
     name: Release
     permissions:
       contents: write
+      releases: write
     strategy:
       matrix:
         os: [windows-latest]
@@ -33,7 +34,7 @@ jobs:
         fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
 
     - name: Publish solution
-      run: dotnet publish -o "${{env.PUBLISH_DIR}}" --configuration Release --runtime ${{matrix.target}} -p:PublishSingleFile=true --no-self-contained
+      run: dotnet publish -o "${{env.PUBLISH_DIR}}" --configuration Release --runtime ${{matrix.target}} -p:PublishSingleFile=true --no-self-contained -p:AssemblyName=${{env.PUBLISH_DIR}}
     
     - name: Upload assets to release
       uses: softprops/action-gh-release@v2

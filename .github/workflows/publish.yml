@@ -10,7 +10,6 @@ jobs:
     name: Release
     permissions:
       contents: write
-      releases: write
     strategy:
       matrix:
         os: [windows-latest]

@@ -40,6 +40,6 @@ jobs:
       run: 7z a -tzip "${{env.PUBLISH_DIR}}.zip" "${{env.PUBLISH_DIR}}/*.exe"
 
     - name: Upload assets to release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         files: "${{env.PUBLISH_DIR}}.zip"

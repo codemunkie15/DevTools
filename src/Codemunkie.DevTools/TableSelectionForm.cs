@@ -1,11 +1,16 @@
-﻿namespace Codemunkie.DevTools
+﻿using System.ComponentModel;
+
+namespace Codemunkie.DevTools
 {
     public partial class TableSelectionForm : Form
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string? TextData { get; set; }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEnumerable<string>? SelectedData { get; internal set; }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TextOptions? Options { get; internal set; }
 
         public TableSelectionForm()

@@ -1,7 +1,10 @@
-﻿namespace Codemunkie.DevTools
+﻿using System.ComponentModel;
+
+namespace Codemunkie.DevTools
 {
     public partial class TextToolOptionsForm : Form
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TextOptions? Options { get; internal set; }
 
         public TextToolOptionsForm()

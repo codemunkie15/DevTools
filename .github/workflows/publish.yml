@@ -1,0 +1,45 @@
+name: Publish
+on:
+  workflow_dispatch: # Allow running the workflow manually from the GitHub UI
+  release:
+    types:
+      - published    # Run the workflow when a new GitHub release is published
+
+jobs:
+  release:
+    name: Release
+    strategy:
+      matrix:
+        os: [windows-latest]
+        target: [win-x64, win-x86]
+      
+    runs-on: ${{matrix.os}}
+
+    steps:
+
+    - name: Set environment variable
+      shell: bash
+      run: echo "APP_NAME=Codemunkie.DevTools" >> $GITHUB_ENV
+
+    - name: Set environment variable
+      shell: bash
+      run: echo "PUBLISH_DIR=${{env.APP_NAME}}-${{github.ref_name}}-${{matrix.target}}" >> $GITHUB_ENV
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+
+    - name: Publish solution
+      run: dotnet publish -o "${{env.PUBLISH_DIR}}" --configuration Release --runtime ${{matrix.target}} -p:PublishSingleFile=true --no-self-contained
+    
+    - name: Zip assets
+      shell: bash
+      run: 7z a -tzip "${{env.PUBLISH_DIR}}.zip" "${{env.PUBLISH_DIR}}/*.exe"
+    
+    - name: Upload assets to release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: "${{env.PUBLISH_DIR}}.zip"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
